@@ -1,0 +1,10 @@
+# Visual Studio project files.
+BiB.bz-Parser.pyproj
+BiB.bz-Parser.sln
+.vs
+
+# Python cache.
+__pycache__
+
+# Parsed books.
+Output
