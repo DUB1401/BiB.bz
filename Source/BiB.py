@@ -1,5 +1,4 @@
-from dublib.Methods import RemoveRecurringCharacters
-from dublib.Methods import RemoveHTML
+from dublib.Methods import RemoveRecurringCharacters, RemoveHTML
 from bs4 import BeautifulSoup
 
 import requests
@@ -112,10 +111,17 @@ class BiB:
 			# Поиск заголовка главы.
 			ChapterTitle = BeautifulSoup(str(Article), "html.parser").find("h1").get_text(strip = True)
 
-			# Если у главы есть номер.
-			if re.search(r"глава \d+", ChapterTitle):
+			# Если у главы есть русский номер.
+			if re.search(r"глава \d+", ChapterTitle, re.IGNORECASE):
 				# Поиск номера главы.
-				Chapter["number"] = int(ChapterTitle.split('.')[0].strip("Глава "))
+				Chapter["number"] = int(ChapterTitle.split('.')[0].lstrip("Гглава "))
+				# Поиск названия главы.
+				Chapter["title"] = ChapterTitle.split('.')[-1].strip()
+
+			# Если у главы есть английский номер.
+			elif re.search(r"chapter \d+", ChapterTitle, re.IGNORECASE):
+				# Поиск номера главы.
+				Chapter["number"] = int(ChapterTitle.split('.')[0].lstrip("Cchapter "))
 				# Поиск названия главы.
 				Chapter["title"] = ChapterTitle.split('.')[-1].strip()
 
