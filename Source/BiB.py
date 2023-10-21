@@ -1,15 +1,11 @@
-from dublib.Methods import RemoveRecurringCharacters, RemoveHTML
+from dublib.Methods import RemoveRecurringSubstrings, RemoveHTML
 from bs4 import BeautifulSoup
 
 import requests
 import re
 
-# Загрузчик книг с сайта BiB.bz.
+# Парсер книг с сайта BiB.bz.
 class BiB:
-
-	#==========================================================================================#
-	# >>>>> МЕТОДЫ <<<<< #
-	#==========================================================================================#
 
 	# Возвращает список структур с описанием книг автора.
 	def getAuthorsBooks(self, URL: str) -> list:
@@ -69,7 +65,7 @@ class BiB:
 			SmallSoup.find("nav").decompose()
 			SmallSoup.find("h4").decompose()
 			# Поиск описания книги и удаление повторяющихся пробелов (в том числе неразрывных).
-			Book["description"] = RemoveRecurringCharacters(SmallSoup.get_text().replace(" ", " "), ' ')
+			Book["description"] = RemoveRecurringSubstrings(SmallSoup.get_text().replace(" ", " "), ' ')
 			# Поиск тегов с ссылками на главы.
 			ChaptersNavList = BeautifulSoup(str(NavList), "html.parser").find_all("a")
 			# Список ссылок на главы.
